@@ -51,6 +51,7 @@ while tries > 0 and chosen_word != output:
 
 game_still_going()
 
+Print("Thank you!")
 
 
 

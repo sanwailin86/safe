@@ -50,7 +50,6 @@ def play():
         print("\n"+ chosen_word.upper() + " is correct!")
         print("You have successfully guessed the correct word! \nThank you for playing!\n")
 
-
     if tries_left == 0:
                 print("You ran out of guesses!\n")
 

@@ -1,56 +1,67 @@
 import random
-words = ["tiger", "elephant", "giraffe"]
-chosen_word = random.choice(words)
-guessed_letters = [""]
 
-word_length = str(len(chosen_word))
-for x in word_length:
-    print("The chosen word contains " + x + " letters.")
+tries_left = 6
 
-def display_current_progress(chosen_word, guessed_letters):
-    display_string = ""
+def play():
+    words = ["tiger", "elephant", "giraffe", "crocodile", "panda", "monkey", "bear"]
+    chosen_word = random.choice(words)
+    guessed_letters = [""]
+    global tries_left
+
+    word_length = str(len(chosen_word))
+    for x in word_length:
+        print("The chosen word contains " + x + " letters and the hint is an animal.")
     for x in chosen_word:
-        if x in guessed_letters:
-            display_string += x
+        print("_", end ="")
+
+    def get_current_progress(chosen_word, guessed_letters):
+        display_string = ""
+        for x in chosen_word:
+            if x in guessed_letters:
+                display_string += x
+            else:
+                display_string += "_"
+        return display_string
+        print(display_string)
+
+    output = get_current_progress(chosen_word, guessed_letters)
+
+
+    while tries_left > 0 and chosen_word != output:
+        input_letter = input("\nPick a letter: ")
+        input_letter.lower()
+        if len(input_letter) != 1:
+            print("Please enter a single letter.")
+        elif input_letter in guessed_letters:
+            print(input_letter + " has already been guessed.")
+        elif input_letter not in "abcdefghijklmnopqrstuvwxyz":
+            print("Must enter a letter from a to z.")
         else:
-            display_string += "_"
+            guessed_letters.append(input_letter)
 
-    return display_string
+        if input_letter not in chosen_word:
+            tries_left -= 1
 
-output = display_current_progress(chosen_word, guessed_letters)
+        output = get_current_progress(chosen_word, guessed_letters)
+        print(output)
+        print("You have " + str(tries_left) + " guesses left.")
 
-tries = len(chosen_word) + 3
+    if output == chosen_word:
+        print("\n"+ chosen_word.upper() + " is correct!")
+        print("You have successfully guessed the correct word! \nThank you for playing!\n")
 
-def game_still_going():
-    if chosen_word == output:
-        print("You have guessed the correct word!")
-    elif tries == 0:
-        print("You ran out of guesses!")
-    else:
-        print("You have given " + str(tries) + " guesses.")
-game_still_going()
 
-while tries > 0 and chosen_word != output:
-    input_letter = input("Pick a letter: ")
-    input_letter.lower()
-    if len(input_letter) != 1:
-        print("Please enter a single letter.")
-    elif input_letter in guessed_letters:
-        print(input_letter + " has already been guessed.")
-    elif input_letter not in "abcdefghijklmnopqrstuvwxyz":
-        print("Must enter a letter from a to z.")
-    else:
-        guessed_letters.append(input_letter)
-        tries -= 1
+    if tries_left == 0:
+                print("You ran out of guesses!\n")
 
-    output = display_current_progress(chosen_word, guessed_letters)
-    print(output)
-    if output == chosen_word or tries == 0:
+while True:
+    print("Welcome to Hangman Game!")
+    answer = str(input("Do you want to play again, Y/N ?: "))
+    answer.lower()
+    if answer == "y":
+        play()
+    elif answer == "n":
+        print("Thank you for playing and hope to see you again soon!")
         break
-    print("You have " + str(tries) + " guess left.")
-
-game_still_going()
-
-
-
-
+    else:
+        print("Please enter either Y or N: ")
